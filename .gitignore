@@ -14,3 +14,6 @@ venv/
 
 # Ignore environment-specific files
 *.sqlite3
+
+# Ignore future external changes to email_logs.db
+echo "email_logs.db" >> .gitignore

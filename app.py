@@ -6,10 +6,8 @@ app = Flask(__name__)
 
 @app.route('/send-email', methods=['POST'])
 def send_email_service():
-    # Parse the request JSON
     data = request.get_json()
 
-    # Validate required fields
     required_fields = ['email', 'message']
     missing_fields = [field for field in required_fields if field not in data]
 
@@ -18,13 +16,11 @@ def send_email_service():
             'error': f'Missing required fields: {missing_fields}'
         }), 400
 
-    # Extract data
     email = data['email']
     message = data['message']
 
-    # Attempt to send email
     try:
-        send_email(email, "Notification", message)  # Assuming "Notification" is the subject
+        send_email(email, "Notification", message)
         return jsonify({
             'status': 'success',
             'message': f'Email successfully sent to {email}'
