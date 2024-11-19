@@ -87,21 +87,21 @@ else:
     print(f"Error: {error['error']}")
 
 # Example Request Payload
-# {
-#     "email": "recipient@example.com",
-#     "message": "This is a test email."
-# }
+ {
+     "email": "recipient@example.com",
+     "message": "This is a test email."
+ }
 
-# Example Success Response
-# {
-#     "status": "success",
-#     "message": "Email successfully sent to recipient@example.com"
-# }
+ Example Success Response
+ {
+     "status": "success",
+     "message": "Email successfully sent to recipient@example.com"
+ }
 
-# Example Error Response
-# {
-#     "status": "failure",
-#     "error": "Missing required fields: ['email']"
-# }
+ Example Error Response
+ {
+     "status": "failure",
+     "error": "Missing required fields: ['email']"
+ }
 ```
 ```
