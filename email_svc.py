@@ -13,6 +13,10 @@ smtp_port = int(os.getenv('SMTP_PORT'))
 
 
 def send_email(to_email, subject, body):
+    if not to_email or "@" not in to_email or "." not in to_email.split("@")[-1]:
+        raise ValueError("Invalid email address")
+    if not body:
+        raise ValueError("Message body cannot be empty")
 
     try:
         msg = EmailMessage()
@@ -26,6 +30,6 @@ def send_email(to_email, subject, body):
             server.login(smtp_user, smtp_password)
             server.send_message(msg)
 
-        return {"status": "Success", "message": f"Email sent to {to_email}"}
+        return {"status": "success", "message": f"Email successfully sent to {to_email}"}
     except Exception as e:
         return {"status": "error", "message": str(e)}

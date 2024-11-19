@@ -9,20 +9,27 @@ app = Flask(__name__)
 def send_email_service():
     data = request.get_json()
     required_fields = ['email', 'message']
-    missing_fields = [field for field in required_fields if field not in data]
+    missing_fields = [field for field in required_fields if field not in data or not data[field]]
     if missing_fields:
         error_message = f"Missing required fields: {missing_fields}"
         log_email_activity(data.get('email', 'N/A'), 'failure', error=error_message)
         return jsonify({'error': error_message}), 400
+
     email = data['email']
     message = data['message']
+
+    if "@" not in email or "." not in email.split("@")[-1]:
+        error_message = "Invalid email format"
+        log_email_activity(email, 'failure', error=error_message)
+        return jsonify({'error': error_message}), 400
+
     try:
-        send_email(email, "Notification", message)
+        response = send_email(email, "Notification", message)
+        if response["status"] == "error":
+            log_email_activity(email, 'failure', message, response["message"])
+            return jsonify(response), 500
         log_email_activity(email, 'success', message)
-        return jsonify({
-            'status': 'success',
-            'message': f'Email successfully sent to {email}'
-        }), 200
+        return jsonify(response), 200
     except Exception as e:
         log_email_activity(email, 'failure', message, str(e))
         return jsonify({
