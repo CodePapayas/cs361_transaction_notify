@@ -87,21 +87,63 @@ else:
     print(f"Error: {error['error']}")
 
 # Example Request Payload
-# {
-#     "email": "recipient@example.com",
-#     "message": "This is a test email."
-# }
+ {
+     "email": "recipient@example.com",
+     "message": "This is a test email."
+ }
 
 # Example Success Response
-# {
-#     "status": "success",
-#     "message": "Email successfully sent to recipient@example.com"
-# }
+ {
+     "status": "success",
+     "message": "Email successfully sent to recipient@example.com"
+ }
 
 # Example Error Response
-# {
-#     "status": "failure",
-#     "error": "Missing required fields: ['email']"
-# }
+ {
+     "status": "failure",
+     "error": "Missing required fields: ['email']"
+ }
 ```
-```
+## UML Sequence Graph
+
+                       ┌─┐                                                                                    ,.-^^-._              
+                       ║"│                                                                                   |-.____.-|             
+                       └┬┘                                                                                   |        |             
+                       ┌┼┐                                                                                   |        |             
+                        │              ┌───────────────────────────────┐          ┌───────────┐              |        |             
+                       ┌┴┐             │Email Notification Microservice│          │SMTP Server│              '-.____.-'             
+                     Client            └───────────────┬───────────────┘          └─────┬─────┘           SQLite Database           
+                        │      POST /send-email        │                                │                        │                  
+                        │─────────────────────────────>│                                │                        │                  
+                        │                              │                                │                        │                  
+                        │                              │────┐                           │                        │                  
+                        │                              │    │ Validate Request          │                        │                  
+                        │                              │<───┘                           │                        │                  
+                        │                              │                                │                        │                  
+                        │                              │                                │                        │                  
+          ╔══════╤══════╪══════════════════════════════╪════════════════════════════════╪════════════════════════╪═════════════════╗
+          ║ ALT  │  Valid Request                      │                                │                        │                 ║
+          ╟──────┘      │                              │                                │                        │                 ║
+          ║             │                              │          Send Email            │                        │                 ║
+          ║             │                              │───────────────────────────────>│                        │                 ║
+          ║             │                              │                                │                        │                 ║
+          ║             │                              │        Acknowledgement         │                        │                 ║
+          ║             │                              │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│                        │                 ║
+          ║             │                              │                                │                        │                 ║
+          ║             │                              │                   Log Email Activity                    │                 ║
+          ║             │                              │────────────────────────────────────────────────────────>│                 ║
+          ╠═════════════╪══════════════════════════════╪════════════════════════════════╪════════════════════════╪═════════════════╣
+          ║ [Invalid Request]                          │                                │                        │                 ║
+          ║             │       400 Bad Request        │                                │                        │                 ║
+          ║             │<─────────────────────────────│                                │                        │                 ║
+          ╚═════════════╪══════════════════════════════╪════════════════════════════════╪════════════════════════╪═════════════════╝
+                        │                              │                                │                        │                  
+                        │    Response (200 or 500)     │                                │                        │                  
+                        │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│                                │                        │                  
+                     Client            ┌───────────────┴───────────────┐          ┌─────┴─────┐           SQLite Database           
+                       ┌─┐             │Email Notification Microservice│          │SMTP Server│               ,.-^^-._              
+                       ║"│             └───────────────────────────────┘          └───────────┘              |-.____.-|             
+                       └┬┘                                                                                   |        |             
+                       ┌┼┐                                                                                   |        |             
+                        │                                                                                    |        |             
+                       ┌┴┐                                                                                   '-.____.-'             
