@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from datetime import datetime
+from email_svc import send_email
 
 app = Flask(__name__)
 
@@ -29,6 +30,18 @@ def notify_transactions():
         return jsonify({'error': 'Transaction amounts must be greater or less than 0.'})
 
     data['receivedAt'] = datetime.now().astimezone().isoformat()
+
+    subject = "Transaction Notification"
+    body = f"Transaction Details:\n{data}"
+
+    email_response = send_email(
+        to_email=data["contactInfo"],
+        subject=subject,
+        body=body
+    )
+
+    if email_response['status'] == 'error':
+        return jsonify({"error": email_response['message']}), 500
 
     return jsonify(data), 200
 
