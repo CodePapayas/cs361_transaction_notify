@@ -1,6 +1,48 @@
+```markdown
 # Email Notification Microservice
 
 This microservice sends emails and logs activity in a SQLite database.
+
+## Requirements
+
+- Python 3.8 or higher
+- The following Python packages:
+  - `flask`
+  - `requests`
+  - `python-dotenv`
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install flask requests python-dotenv
+   ```
+
+3. Create a `.env` file in the root of the project to store your environment variables:
+   ```plaintext
+   SMTP_USER=your_email@example.com
+   SMTP_PASSWORD=your_smtp_password
+   SMTP_SERVER=smtp.example.com
+   SMTP_PORT=587
+   ```
+
+4. Ensure the SQLite database `email_logs.db` exists. If not, create it using the schema provided in the repository:
+   ```sql
+   CREATE TABLE email_logs (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       timestamp TEXT NOT NULL,
+       recipient TEXT NOT NULL,
+       status TEXT NOT NULL,
+       message TEXT,
+       error TEXT
+   );
+   ```
 
 ## Communications Contract
 
@@ -61,3 +103,5 @@ else:
 #     "status": "failure",
 #     "error": "Missing required fields: ['email']"
 # }
+```
+```
