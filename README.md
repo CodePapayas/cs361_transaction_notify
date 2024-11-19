@@ -104,7 +104,7 @@ else:
      "error": "Missing required fields: ['email']"
  }
 ```
-##UML Sequence Graph
+## UML Sequence Graph
 
                        ┌─┐                                                                                    ,.-^^-._              
                        ║"│                                                                                   |-.____.-|             
@@ -147,5 +147,3 @@ else:
                        ┌┼┐                                                                                   |        |             
                         │                                                                                    |        |             
                        ┌┴┐                                                                                   '-.____.-'             
-
-```
